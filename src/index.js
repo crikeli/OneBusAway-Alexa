@@ -1,7 +1,7 @@
 var http = require('http'),
     AlexaSkill = require('./AlexaSkill'),
     APP_ID = 'YOUR APP ID FROM AMAZON',
-    OBA_KEY = 'ONEBUSAWAY API';
+    OBA_KEY = 'ONEBUSAWAY API KEY HERE PLEASE';
 
 // Defining the URL that makes the requests
 var url = function(stopId) {
