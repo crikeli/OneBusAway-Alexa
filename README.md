@@ -7,7 +7,7 @@ An amazon alexa skill that taps into data from the One Bus Away API and provides
 
 2) Developing a deeper understanding of working with external api's, manipulating data and communicating a process through technology.
 
-3) Better understand natural human conversation in relation to the current capabilites of Alexa.
+3) Better model natural human conversation in relation to the current capabilites of Alexa.
 
 #My personal goals for this project are :
 
