@@ -1,7 +1,7 @@
 var http = require('http'),
     AlexaSkill = require('./AlexaSkill'),
-    APP_ID = 'YOUR APP ID FROM AMAZON',
-    OBA_KEY = 'ONEBUSAWAY API KEY HERE PLEASE';
+    APP_ID = 'AMAZON KEY',
+    OBA_KEY = 'OBA KEY';
 
 // Defining the URL that makes the requests
 var url = function(stopId) {
@@ -39,25 +39,36 @@ var handleNextBusRequest = function(intent, session, response) {
                 .entry
                 .arrivalsAndDepartures[0]
                 .numberOfStopsAway;
-            // var ETA = data
-            //     .data
-            //     .entry
-            //     .arrivalsAndDepartures[0]
-            //     .predictedArrivalTime;
-            // var right_now = new Date(ETA).getHours().getMinutes();
-            // The name of the route
             var moreInfo = data
                 .data
                 .entry
                 .arrivalsAndDepartures[0]
                 .routeShortName;
+            // Let's now get the predicted arrival time in minutes.
+            var isPredicted = data
+                .data
+                .entry
+                .arrivalsAndDepartures[0]
+                .predicted
+            if (isPredicted) {
+                ETA = parseInt(data.data.entry.arrivalsAndDepartures[0].predictedArrivalTime);
+            } else {
+                ETA = parseInt(data.data.entry.arrivalsAndDepartures[0].scheduledArrivalTime);
+            }
+            var arrivalTime = Math.round(((ETA - data.currentTime) / 1000 / 60));
+
+            // if (arrivalTime == '1') {
+            //     output += ' minute.';
+            // } else {
+            //     output += ' minutes.';
+            // }
             // Accesses what the trips final destination is.
             var destination = data
                 .data
                 .entry
                 .arrivalsAndDepartures[0]
                 .tripHeadsign
-            var output = 'The next bus is route number ' + moreInfo + ', heading to ' + destination + '. It is currently ' + text + ' stops away.';
+            var output = 'The next bus is route number ' + moreInfo + ', heading to ' + destination + '. It is currently ' + text + ' stops away and it is scheduled to arrive in ' + arrivalTime + ' minutes.';
             // and scheduled to arrive at ' + right_now;
         } else {
             var text = 'That bus stop does not exist.'
