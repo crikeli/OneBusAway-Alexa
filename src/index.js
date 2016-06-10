@@ -1,7 +1,7 @@
 var http = require('http'),
     AlexaSkill = require('./AlexaSkill'),
-    APP_ID = 'AMAZON KEY',
-    OBA_KEY = 'OBA KEY';
+    APP_ID = 'APPIDAMAZON',
+    OBA_KEY = 'OBA';
 
 // Defining the URL that makes the requests
 var url = function(stopId) {
@@ -39,6 +39,11 @@ var handleNextBusRequest = function(intent, session, response) {
                 .entry
                 .arrivalsAndDepartures[0]
                 .numberOfStopsAway;
+            if (text == '1') {
+                text += ' stop';
+            } else {
+                text += ' stops';
+            }
             var moreInfo = data
                 .data
                 .entry
@@ -57,18 +62,18 @@ var handleNextBusRequest = function(intent, session, response) {
             }
             var arrivalTime = Math.round(((ETA - data.currentTime) / 1000 / 60));
 
-            // if (arrivalTime == '1') {
-            //     output += ' minute.';
-            // } else {
-            //     output += ' minutes.';
-            // }
+            if (arrivalTime == '1') {
+                arrivalTime += ' minute.';
+            } else {
+                arrivalTime += ' minutes.';
+            }
             // Accesses what the trips final destination is.
             var destination = data
                 .data
                 .entry
                 .arrivalsAndDepartures[0]
                 .tripHeadsign
-            var output = 'The next bus is route number ' + moreInfo + ', heading to ' + destination + '. It is currently ' + text + ' stops away and it is scheduled to arrive in ' + arrivalTime + ' minutes.';
+            var output = 'The next bus is route number ' + moreInfo + ', heading to ' + destination + '. It is currently ' + text + ' away and scheduled to arrive in ' + arrivalTime;
             // and scheduled to arrive at ' + right_now;
         } else {
             var text = 'That bus stop does not exist.'
