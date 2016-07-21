@@ -1,12 +1,16 @@
 var http = require('http'),
     AlexaSkill = require('./AlexaSkill'),
-    APP_ID = 'APPIDAMAZON',
-    OBA_KEY = 'OBA';
+    APP_ID = 'amzn1.echo-sdk-ams.app.bde9ae8f-ec5a-41e5-a85e-2a18d1a466b3',
+    OBA_KEY = 'ebce0d53-acf7-40a2-b98b-e6210f2a9ca0';
 
 // Defining the URL that makes the requests
 var url = function(stopId) {
     return 'http://api.pugetsound.onebusaway.org/api/where/arrivals-and-departures-for-stop/1_' + stopId + '.json?key=' + OBA_KEY;
 };
+
+// var url2 = function(stopId) {
+//     return 'http://api.pugetsound.onebusaway.org/api/where/stop/1_' + stopId + '.json?key=' + OBA_KEY;
+// }
 
 // Using nodes http library, I am able to get back the response from the url and parse the json body.
 // I also account for any other errors.
@@ -27,6 +31,17 @@ var getJsonFromOba = function(stopId, callback) {
         console.log('Error: ' + e);
     });
 };
+
+// Getting data from the other URL pertaining to specific routes served by one bus-stop
+// var getMoreJsonFromOba = function(stopId, callback) {
+//     http.get(url2(stopId), function(res) {
+//         var body = '';
+
+//         res.on('data', function(data) {
+//             var result = JSON.parse(body);
+//         })
+//     })
+// }
 
 // The main function where all the data manipulation between amazon ASK API and the data I am able to access from the end-point URL.
 var handleNextBusRequest = function(intent, session, response) {
@@ -76,7 +91,7 @@ var handleNextBusRequest = function(intent, session, response) {
             var output = 'The next bus is route number ' + moreInfo + ', heading to ' + destination + '. It is currently ' + text + ' away and scheduled to arrive in ' + arrivalTime;
             // and scheduled to arrive at ' + right_now;
         } else {
-            var text = 'That bus stop does not exist.'
+            var text = 'There are no scheduled buses for this stop at this time.'
             var output = text;
         }
 
@@ -85,6 +100,11 @@ var handleNextBusRequest = function(intent, session, response) {
         response.tell(output, heading);
     });
 };
+
+
+// var handleStopRequest = function(intent, session, response) {
+//
+// }
 
 // BusSchedule becomes a function that is dependent on calling the AlexaSkill. It's parameters are; itself and the APP_ID.
 var BusSchedule = function() {
@@ -123,6 +143,7 @@ BusSchedule.prototype.intentHandlers = {
     }
 };
 
+// This method is only invoked in the exports handler in AWS Lambda.
 exports.handler = function(event, context) {
     var skill = new BusSchedule();
     skill.execute(event, context);
