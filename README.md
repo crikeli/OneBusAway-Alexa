@@ -17,4 +17,3 @@ An amazon alexa skill that taps into data from the One Bus Away API and provides
 2) To understand how all the elements coalesce together, in this case the data I retrieve from the One-Bus-Away API and the Alexa Skills Kit SDK.(achieved).
 
 3) To give users the opportunity to save multiple bus-stop id's by giving them relatable names (eg. Alexa, give me the next scheduled arrival for 5th and Pike).(To be achieved).
-
